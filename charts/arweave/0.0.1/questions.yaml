@@ -63,7 +63,7 @@ questions:
 
   - variable: environmentVariables
     label: "Environment Variables for Arweave"
-    group: "Arweave Environment Variables"
+    group: "Arweave Environment"
     schema:
       type: list
       default: []
