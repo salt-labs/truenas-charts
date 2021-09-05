@@ -45,7 +45,7 @@ jobs:
         os:
           - ubuntu-latest
         config:
-          - name: "Arweave"
+          - name: "arweave"
             folder: "containers/arweave"
 
     steps:
