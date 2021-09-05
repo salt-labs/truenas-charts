@@ -1,5 +1,7 @@
+
 image:
   pullPolicy: IfNotPresent
-  repository: ghcr.io/salt-labs/truenas-charts/arweave
-  tag: latest
+  repository: ghcr.io/salt-labs/arweave-miner
+  tag:
+
 updateStrategy: Recreate
