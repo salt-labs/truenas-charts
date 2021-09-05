@@ -99,14 +99,6 @@ jobs:
 
             ${{ steps.prep_release.outputs.changelog }}
 
-            # Containers
-
-            ## ghcr.io
-
-            ```bash
-            docker pull ghcr.io/${{ github.repository }}:${{ steps.prep_release.outputs.calver }}
-            ```
-
           draft: false
           prerelease: true
 
@@ -123,14 +115,6 @@ jobs:
             # ${{ steps.prep_release.outputs.repo_name }} changelog
 
             ${{ steps.prep_release.outputs.changelog }}
-
-            # Containers
-
-            ## ghcr.io
-
-            ```bash
-            docker pull ghcr.io/${{ github.repository }}:${{ steps.prep_release.outputs.calver }}
-            ```
 
           draft: true
           prerelease: false
@@ -163,69 +147,3 @@ jobs:
 
       # Container
       publish_container: ${{ steps.test_dockerfile.outputs.publish }}
-
-  #########################
-  # Publish Container
-  #########################
-
-  build-and-push-image:
-
-    name: Build and Push Container Image ${{ matrix.config.name }}
-
-    needs:
-      - create_release
-
-    runs-on: ${{ matrix.os }}
-
-    timeout-minutes: 30
-    continue-on-error: false
-
-    strategy:
-      fail-fast: true
-      matrix:
-        os:
-          - ubuntu-latest
-        config:
-          - name: "arweave"
-            folder: "containers/arweave"
-
-    if: ${{ needs.create_release.outputs.publish_container }}
-
-    steps:
-      - id: checkout_repository
-        name: Checkout repository
-        uses: actions/checkout@v2
-
-      - id: login
-        name: Login to Container registry
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - id: meta
-        name: Define Container metadata
-        uses: docker/metadata-action@v3
-        with:
-          #images: ${{ env.REGISTRY }}/${{ env.PROJECT }}
-          images: ${{ env.REGISTRY }}/${{ env.PROJECT }}/${{ matrix.config.name }}
-          flavor: |
-            latest=true
-          tags: |
-            type=raw,value={{ date 'YYYYMMDD' }}
-            type=raw,value=${{ needs.create_release.outputs.calver }}
-            type=raw,value=release
-            type=raw,value=stable
-            type=sha,format=long
-            type=ref,event=branch
-            type=ref,event=tag
-
-      - id: build
-        name: Build and push Container image
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ matrix.config.folder }}
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
