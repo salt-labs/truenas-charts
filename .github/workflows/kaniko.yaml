@@ -67,6 +67,7 @@ jobs:
         name: Docker Image Build
         run: >
           cd "${{ matrix.config.folder }}"
+          &&
           docker image build
           --rm
           --tag ${{ matrix.config.name }}:latest
