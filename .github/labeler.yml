@@ -23,15 +23,3 @@ Docker:
 # Add 'shell' label to bash shell scripts
 Shell:
   - "*.sh"
-
-# Add 'PowerShell' label to PowerShell scripts
-PowerShell:
-  - "*.ps1"
-
-# Add 'Infrastructure' label to Infra As Code changes
-Infrastructure:
-  - "infra/**"
-
-# Add 'Pulumi' label to Infra As Code changes
-Pulumi:
-  - "infra/**"

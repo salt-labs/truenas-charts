@@ -77,26 +77,6 @@ jobs:
           test:latest
           --help
 
-      # Turtles all the way down
-      - id: action_test
-        name: Action Test
-        uses: ./
-        with:
-          loglevel: "INFO"
-          registry: ghcr.io
-          registry_namespace: ${{ env.REGISTRY_NAMESPACE }}
-          registry_username: ${{ env.REGISTRY_USERNAME }}
-          registry_password: ${{ env.REGISTRY_PASSWORD }}
-          image_tag_extra: true
-          cache_enabled: false
-          extra_args: >
-            --reproducible
-            --cleanup
-            --verbosity info
-            --build-arg VERSION=latest
-            --no-push
-        continue-on-error: true
-
   #########################
   # Publish Container
   #
@@ -139,7 +119,7 @@ jobs:
       # Attempt to publish the container using the Kaniko Cache
       - id: publish_package_container_cached
         name: Publish Package to Container Registry (Cache Enabled)
-        uses: ./
+        uses: salt-labs/action-kaniko@master
         with:
           loglevel: "INFO"
           registry: ghcr.io
@@ -158,7 +138,7 @@ jobs:
       # Take another stab with the Kaniko Cache disabled
       - id: publish_package_container_uncached
         name: Publish Package to Container Registry (Cache Disabled)
-        uses: ./
+        uses: salt-labs/action-kaniko@master
         with:
           loglevel: "INFO"
           registry: ghcr.io

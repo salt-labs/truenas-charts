@@ -197,8 +197,7 @@ jobs:
 
       - id: publish_package_container
         name: Publish Package to Container Registry
-        #uses: docker://ghcr.io/salt-labs/action-kaniko:stable
-        uses: ./
+        uses: docker://ghcr.io/salt-labs/action-kaniko:stable
         with:
           loglevel: "INFO"
           registry: ghcr.io

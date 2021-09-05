@@ -28,12 +28,10 @@ ARG ARWEAVE_URL
 
 WORKDIR /build
 
-ADD ${ARWEAVE_URL} /tmp/arweave.tar.gz
+ADD ${ARWEAVE_URL} arweave.tar.gz
 
-RUN cd ${WORKDIR} \
- && tar -xvf /tmp/arweave.tar.gz
-
-RUN ls -lah ${WORKDIR}
+RUN tar -xzvf arweave.tar.gz \
+ && rm -f arweave.tar.gz
 
 #########################
 # STAGE: CERTS
@@ -69,10 +67,12 @@ LABEL name="arweave-miner" \
     url="https://github.com/salt-labs/truenas-charts" \
     org.opencontainers.image.source="https://github.com/salt-labs/truenas-charts"
 
-WORKDIR /
+EXPOSE 1984
+
+WORKDIR /arweave
 
 # hadolint ignore=DL3018
-RUN \
+RUN DEBIAN_FRONTEND="noninteractive" \
     apt update \
  && apt upgrade -y \
  && apt install -y \
@@ -86,12 +86,18 @@ RUN \
         tzdata \
  && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p \
+    /arweave/config \
+    /arweave/logs \
+    /data
+
 COPY --from=BUILD "/build" "/arweave"
 COPY --from=CERTS "/ca-certificates.crt" "/etc/ssl/ca-certificates.crt"
 
 COPY "scripts" "/scripts"
 
 COPY files/sysctl/01-arweave.conf /etc/sysctl.d/01-arweave.conf
+#COPY files/arweave/arweave.conf /arweave/config/arweave.conf
 
 ENV PATH /arweave:/scripts/:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/bin:/sbin
 

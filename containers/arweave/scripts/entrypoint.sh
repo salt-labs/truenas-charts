@@ -15,6 +15,7 @@ export LOGLEVEL="${INPUT_LOGLEVEL:=INFO}"
 export ARWEAVE_HOME="${ARWEAVE_HOME:=/arweave}"
 export ARWEAVE_REWARDS_ADDRESS="${ARWEAVE_REWARDS_ADDRESS}"
 export ARWEAVE_PEERS="peer 188.166.200.45 peer 188.166.192.169 peer 163.47.11.64 peer 139.59.51.59 peer 138.197.232.192"
+export ARWEAVE_CONFIG_DIR="${ARWEAVE_CONFIG_DIR:=$ARWEAVE_HOME/config}"
 export ARWEAVE_DATA_DIR="${ARWEAVE_DATA_DIR:=/data}"
 
 #########################
@@ -33,7 +34,7 @@ checkReqs || { writeLog "ERROR" "Failed to check all requirements" ; exit 1 ; }
 case "${1,,}" in
 
 	version )
-		${ARWEAVE_HOME}/bin/start --"${1}" || { writeLog "ERROR" "Failed to show Arweave version!" ; exit 1 ; }
+		${ARWEAVE_HOME}/bin/arweave --"${1}" || { writeLog "ERROR" "Failed to show Arweave version!" ; exit 1 ; }
 		exit 0
 	;;
 
@@ -51,6 +52,22 @@ esac
 # Check the minimum required variables are populated
 checkVarEmpty "ARWEAVE_REWARDS_ADDRESS" "Arweave Rewards Address" && exit 1
 
-${ARWEAVE_HOME}/bin/start mine mining_addr ${ARWEAVE_REWARDS_ADDRESS} ${ARWEAVE_PEERS} &
+echo -e "##### SYNCING WEAVE #####"
 
-#tail -F 
+${ARWEAVE_HOME}/bin/start \
+	data_dir "${ARWEAVE_DATA_DIR}" \
+	sync_jobs 100 \
+	${ARWEAVE_PEERS} 
+
+echo -e "##### MINING START #####"
+
+${ARWEAVE_HOME}/bin/start \
+	data_dir "${ARWEAVE_DATA_DIR}" \
+	mine \
+	mining_addr ${ARWEAVE_REWARDS_ADDRESS} \
+	${ARWEAVE_PEERS} \
+	&
+
+echo -e "##### TAILING LOGS #####"
+
+${ARWEAVE_HOME}/bin/logs -f
