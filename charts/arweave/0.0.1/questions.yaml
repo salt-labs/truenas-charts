@@ -1,0 +1,83 @@
+groups:
+
+  - name: "Arweave Storage"
+    description: "Configure Storage for Arweave"
+
+  - name: "Arweave Configuration"
+    description: "Set the Arweave configuration parameters"
+
+  - name: "Arweave Environment"
+    description: "Set the environment that will be visible to the container"
+
+questions:
+
+  - variable: ARWEAVE_DATA_DIR
+    label: "Arweave Data Directory"
+    group: "Arweave Storage"
+    schema:
+      type: dict
+      attrs:
+        - variable: config
+          label: "Configuration Volume"
+          schema:
+            type: dict
+            attrs:
+              - variable: datasetName
+                label: "Data Volume Dataset Name"
+                schema:
+                  type: string
+                  hidden: true
+                  $ref:
+                    - "normalize/ixVolume"
+                  show_if: [["hostPathEnabled", "=", false]]
+                  default: "config"
+                  editable: false
+              - variable: mountPath
+                label: "Data Dir Mount Path"
+                description: "Path where the volume will be mounted inside the pod"
+                schema:
+                  type: path
+                  hidden: true
+                  editable: true
+                  default: "/data"
+              - variable: hostPathEnabled
+                label: "Enable Custom Host Path for Arweave Data Volume"
+                schema:
+                  type: boolean
+                  default: false
+                  show_subquestions_if: true
+                  subquestions:
+                    - variable: hostPath
+                      label: "Host Path for Arweave Data Volume"
+                      schema:
+                        type: hostpath
+                        required: true
+
+  - variable: ARWEAVE_REWARDS_ADDRESS
+    label: "Arweave rewards address"
+    group: "Arweave Configuration"
+    description: "Receive wallet address for mining rewards"
+    schema:
+      type: string
+      default: ""
+
+  - variable: environmentVariables
+    label: "Environment Variables for Arweave"
+    group: "Arweave Environment Variables"
+    schema:
+      type: list
+      default: []
+      items:
+        - variable: environmentVariable
+          label: "Environment Variable"
+          schema:
+            type: dict
+            attrs:
+              - variable: name
+                label: "Name"
+                schema:
+                  type: string
+              - variable: value
+                label: "Value"
+                schema:
+                  type: string

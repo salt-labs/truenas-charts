@@ -1,0 +1,42 @@
+apiVersion: {{ template "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ template "common.names.fullname" . }}
+  labels: {{ include "common.labels" . | nindent 4 }}
+  annotations:
+    ix.upgrade.scale.down.workload: true
+spec:
+  strategy:
+    type: {{ .Values.updateStrategy }}
+  selector:
+    matchLabels: {{ include "common.labels.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      name: {{ template "common.names.fullname" . }}
+      labels: {{ include "common.labels.selectorLabels" . | nindent 8 }}
+    spec:
+      # FIXME: Let's please remove hostnetwork when upstream hostport issue is sorted out with kube-router
+      hostNetwork: true
+      containers:
+        - name: {{ .Chart.Name }}
+          {{ include "common.containers.imageConfig" .Values.image | nindent 10 }}
+          volumeMounts: {{ include "common.storage.configureAppVolumeMountsInContainer" .Values | nindent 12 }}
+          {{ range $index, $hostPathConfiguration := .Values.extraAppVolumeMounts }}
+            - name: extrappvolume-{{ $index }}
+              mountPath: {{ $hostPathConfiguration.mountPath }}
+          {{ end }}
+          ports:
+            - name: arweave-network
+              protocol: TCP
+              containerPort: 1984
+              hostPort: 1984
+          {{ $envList := (default list .Values.environmentVariables) }}
+          {{ $envList = mustAppend $envList (dict "name" "ARWEAVE_DATA_DIR" "value" "/data") }}
+          {{ $envList = mustAppend $envList (dict "name" "ARWEAVE__REWARDS_ADDRESS" "value" "unset") }}
+          {{ include "common.containers.allEnvironmentVariables" (dict "environmentVariables" $envList) | nindent 10 }}
+      volumes: {{ include "common.storage.configureAppVolumes" .Values | nindent 8 }}
+      {{ range $index, $hostPathConfiguration := .Values.extraAppVolumeMounts }}
+        - name: extrappvolume-{{ $index }}
+          hostPath:
+            path: {{ $hostPathConfiguration.hostPath }}
+      {{ end }}
