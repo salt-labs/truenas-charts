@@ -44,6 +44,9 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
+        config:
+          - name: "Arweave"
+            folder: "containers/arweave"
 
     steps:
       - id: checkout_repository
@@ -63,18 +66,19 @@ jobs:
       - id: docker_build
         name: Docker Image Build
         run: >
+          cd "${{ matrix.config.folder }}"
           docker image build
           --rm
-          --tag test:latest
-          .
+          --tag ${{ matrix.config.name }}:latest
+          --file Dockerfile
 
       - id: docker_test
         name: Docker Container Test
         run: >
           docker container run
           --rm
-          --name test
-          test:latest
+          --name ${{ matrix.config.name }}
+          ${{ matrix.config.name }}:latest
           --help
 
   #########################
