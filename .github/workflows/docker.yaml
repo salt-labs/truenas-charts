@@ -73,7 +73,6 @@ jobs:
             type=raw,value=latest
             type=schedule,pattern={{ date 'YYYYMMDD' }}
             type=ref,event=branch
-            type=ref,event=push
             type=ref,event=tag
             type=match,pattern=\d.\d.\d
             type=sha,format=long
