@@ -71,7 +71,7 @@ jobs:
           docker image build
           --rm
           --tag ${{ matrix.config.name }}:latest
-          --file Dockerfile
+          .
 
       - id: docker_test
         name: Docker Container Test
