@@ -2,6 +2,6 @@
 image:
   pullPolicy: IfNotPresent
   repository: ghcr.io/salt-labs/arweave-miner
-  tag:
+  tag: "2.4.3.0"
 
 updateStrategy: Recreate
