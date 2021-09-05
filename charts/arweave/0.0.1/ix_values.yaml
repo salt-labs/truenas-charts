@@ -1,0 +1,5 @@
+image:
+  pullPolicy: IfNotPresent
+  repository: ghcr.io/salt-labs/truenas-charts/arweave
+  tag: latest
+updateStrategy: Recreate

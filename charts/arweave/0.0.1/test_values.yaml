@@ -2,12 +2,8 @@ appVolumeMounts:
   data:
     emptyDir: true
     mountPath: /data
-  staging:
-    emptyDir: true
-    mountPath: /plots
-farmr_env: 'off'
 image:
   pullPolicy: IfNotPresent
-  repository: ixsystems/chia-docker
-  tag: v1.2.4
+  repository: ghcr.io/salt-labs/truenas-charts/arweave
+  tag: latest
 updateStrategy: Recreate

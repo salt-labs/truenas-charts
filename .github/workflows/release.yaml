@@ -26,6 +26,8 @@ on:
 env:
   PROJECT: ${{ github.repository }}
 
+  REGISTRY: ghcr.io
+
   REGISTRY_NAMESPACE: ${{ github.repository_owner }}
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PAT }}
@@ -140,6 +142,9 @@ jobs:
           if [ -f "Dockerfile" ];
           then
             echo '::set-output name=publish::TRUE'
+          else
+            # TODO: Fix override
+            echo '::set-output name=publish::TRUE'
           fi
 
     outputs:
@@ -163,11 +168,9 @@ jobs:
   # Publish Container
   #########################
 
-  release_publish_docker:
-    name: Publish Release to OCI Container Registry
+  build-and-push-image:
 
-    needs:
-      - create_release
+    name: Build and Push Container Image ${{ matrix.config.name }}
 
     runs-on: ${{ matrix.os }}
 
@@ -179,36 +182,44 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
+        config:
+          - name: "arweave"
+            folder: "containers/arweave"
 
-    # Only run if there is a Dockerfile in this project
     if: ${{ needs.create_release.outputs.publish_container }}
 
     steps:
       - id: checkout_repository
-        name: Checkout repository with all history and tags
+        name: Checkout repository
         uses: actions/checkout@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          fetch-depth: 0
-          submodules: false
-          clean: true
-          persist-credentials: true
 
-      - id: publish_package_container
-        name: Publish Package to Container Registry
-        uses: docker://ghcr.io/salt-labs/action-kaniko:stable
+      - id: login
+        name: Login to Container registry
+        uses: docker/login-action@v1
         with:
-          loglevel: "INFO"
-          registry: ghcr.io
-          registry_namespace: ${{ env.REGISTRY_NAMESPACE }}
-          registry_username: ${{ env.REGISTRY_USERNAME }}
-          registry_password: ${{ env.REGISTRY_PASSWORD }}
-          image_tag: ${{ needs.create_release.outputs.calver }}
-          image_tag_extra: true
-          cache_enabled: false
-          extra_args: >
-            --reproducible
-            --cleanup
-            --verbosity info
-            --build-arg VERSION=${{ needs.create_release.outputs.calver }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        name: Define Container metadata
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.PROJECT }}/${{ matrix.config.name }}
+          flavor: |
+            latest=true
+          tags: |
+            type=raw,value={{ date 'YYYYMMDD' }}
+            type=raw,value=release
+            type=sha,format=long
+            type=ref,event=branch
+            type=ref,event=tag
+
+      - id: build
+        name: Build and push Container image
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.config.folder }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
