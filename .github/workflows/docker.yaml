@@ -69,13 +69,13 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.PROJECT }}/${{ matrix.config.name }}
+          flavor: |
+            latest=true
           tags: |
-            type=raw,value=latest
-            type=schedule,pattern={{ date 'YYYYMMDD' }}
+            type=raw,value={{ date 'YYYYMMDD' }}
+            type=sha,format=long
             type=ref,event=branch
             type=ref,event=tag
-            type=match,pattern=\d.\d.\d
-            type=sha,format=long
 
       - id: build
         name: Build and push Container image
