@@ -1,0 +1,9 @@
+appVolumeMounts:
+  data:
+    emptyDir: true
+    mountPath: /data
+image:
+  pullPolicy: IfNotPresent
+  repository: ghcr.io/salt-labs/truenas-charts/arweave
+  tag: latest
+updateStrategy: Recreate

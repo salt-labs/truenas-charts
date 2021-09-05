@@ -1,0 +1,17 @@
+image:
+  repository: ghcr.io/salt-labs/truenas-charts/arweave
+  tag: latest
+  pullPolicy: IfNotPresent
+
+updateStrategy: Recreate
+
+environmentVariables:
+  - name: "ARWEAVE_REWARDS_ADDRESS"
+    value: ""
+  - name: "ARWEAVE_DATA_DIR"
+    value: "/data"
+
+appVolumeMounts:
+  data:
+    emptyDir: true
+    mountPath: "/data"

@@ -1,0 +1,116 @@
+groups:
+
+  - name: "Storage"
+    description: "Configure Storage"
+
+  - name: "Configuration"
+    description: "Set the configuration parameters"
+
+  - name: "Environment"
+    description: "Set the environment that will be visible to the container"
+
+questions:
+
+  - variable: appVolumeMounts
+    label: "Arweave Storage"
+    group: "Storage"
+    schema:
+      type: dict
+      attrs:
+        - variable: ARWEAVE_DATA_DIR
+          label: "Arweave Data Directory"
+          schema:
+            type: dict
+            attrs:
+              - variable: datasetName
+                label: "ZFS Dataset Name"
+                schema:
+                  type: string
+                  hidden: true
+                  $ref:
+                    - "normalize/ixVolume"
+                  show_if: [["hostPathEnabled", "=", false]]
+                  default: "arweave"
+                  editable: false
+              - variable: mountPath
+                label: "Data Dir Mount Path"
+                description: "Path where the volume will be mounted inside the pod"
+                schema:
+                  type: path
+                  hidden: true
+                  editable: true
+                  default: "/data"
+              - variable: hostPathEnabled
+                label: "Enable Custom Host Path for Arweave Data Volume"
+                schema:
+                  type: boolean
+                  default: false
+                  show_subquestions_if: true
+                  subquestions:
+                    - variable: hostPath
+                      label: "Host Path for Arweave Data Volume"
+                      schema:
+                        type: hostpath
+                        required: true
+
+  - variable: extraAppVolumeMounts
+    label: "Arweave Extra Host Path Volumes"
+    group: "Storage"
+    schema:
+      type: list
+      items:
+        - variable: extraAppVolume
+          label: "Arweave Host Path Volume"
+          description: "Add an extra host path volume for Arweave application"
+          schema:
+            type: dict
+            attrs:
+              - variable: mountPath
+                label: "Mount Path in Pod"
+                description: "Path where the volume will be mounted inside the pod"
+                schema:
+                  type: path
+                  required: true
+              - variable: hostPath
+                label: "Host Path"
+                description: "Host path"
+                schema:
+                  type: hostpath
+                  required: true
+
+  - variable: ARWEAVE_REWARD_ADDRESS
+    label: "Arweave rewards address"
+    group: "Configuration"
+    description: "Receive wallet address for mining rewards"
+    schema:
+      type: string
+      default: "unset"
+
+  - variable: ARWEAVE_DATA_DIR
+    label: "Arweave Data Directory"
+    group: "Configuration"
+    description: "Directory path used for mining"
+    schema:
+      type: string
+      default: "/data"
+
+  - variable: environmentVariables
+    label: "Environment Variables for Arweave"
+    group: "Environment"
+    schema:
+      type: list
+      default: []
+      items:
+        - variable: environmentVariable
+          label: "Environment Variable"
+          schema:
+            type: dict
+            attrs:
+              - variable: name
+                label: "Name"
+                schema:
+                  type: string
+              - variable: value
+                label: "Value"
+                schema:
+                  type: string
