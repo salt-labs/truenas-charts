@@ -32,7 +32,7 @@ spec:
               hostPort: 1984
           {{ $envList := (default list .Values.environmentVariables) }}
           {{ $envList = mustAppend $envList (dict "name" "ARWEAVE_DATA_DIR" "value" "/data") }}
-          {{ $envList = mustAppend $envList (dict "name" "ARWEAVE__REWARDS_ADDRESS" "value" "unset") }}
+          {{ $envList = mustAppend $envList (dict "name" "ARWEAVE_REWARDS_ADDRESS" "value" "unset") }}
           {{ include "common.containers.allEnvironmentVariables" (dict "environmentVariables" $envList) | nindent 10 }}
       volumes: {{ include "common.storage.configureAppVolumes" .Values | nindent 8 }}
       {{ range $index, $hostPathConfiguration := .Values.extraAppVolumeMounts }}
