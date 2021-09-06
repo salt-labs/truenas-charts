@@ -1,7 +1,7 @@
 
 apiVersion: v1
 
-appVersion: v0.0.1
+appVersion: v0.0.2
 
 dependencies:
   - name: common
@@ -25,4 +25,4 @@ sources:
 - https://github.com/ArweaveTeam/arweave
 - https://github.com/salt-labs/truenas-charts
 
-version: 0.0.1
+version: 0.0.2
