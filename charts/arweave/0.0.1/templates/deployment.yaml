@@ -1,5 +1,3 @@
-{{- $values := . -}}
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,17 +51,17 @@ spec:
               memory: {{ .Values.resources.limits.memory }}
           env:
             - name: ARWEAVE_REWARD_ADDRESS
-              value: {{ $values.arweaveRewardAddress }}
+              value: {{ required "Reward address not set" .Values.arweaveRewardAddress }}
           volumeMounts:
-{{- if $values.appVolumeMounts -}}
-  {{- range $name, $volume := $values.appVolumeMounts -}}
+{{- if .Values.appVolumeMounts -}}
+  {{- range $name, $volume := .Values.appVolumeMounts -}}
             - name: {{ $name }}
               mountPath: {{ required "hostPath not set" $volume.mountPath }}
   {{ end }}
 {{- end -}}
       volumes:
-{{- if $values.appVolumeMounts -}}
-  {{- range $name, $volume := $values.appVolumeMounts -}}
+{{- if .Values.appVolumeMounts -}}
+  {{- range $name, $volume := .Values.appVolumeMounts -}}
         - name: {{ $name }}
       {{ if or $volume.emptyDir $.emptyDirVolumes }}
           emptyDir: {}
