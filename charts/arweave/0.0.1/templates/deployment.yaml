@@ -1,0 +1,72 @@
+{{- $values := . -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    site: {{ .Release.Name }}
+  annotations:
+    ix.upgrade.scale.down.workload: "true"
+spec:
+  strategy:
+    type: {{ .Values.updateStrategy }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      site: {{ .Release.Name }}
+  template:
+    metadata:
+      name: {{ .Chart.Name }}
+      labels:
+        app: {{ .Chart.Name }}
+        site: {{ .Release.Name }}
+      annotations:
+        ix.upgrade.scale.down.workload: "true"
+    spec:
+      hostNetwork: true
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - name: {{ .Chart.Name }}
+              protocol: TCP
+              containerPort: 1984
+              hostPort: 1984
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Chart.Name }}
+            initialDelaySeconds: 5
+            periodSeconds: 3
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Chart.Name }}
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          volumeMounts:
+            - name: arweaveDataDir
+              mountPath: /data
+      volumes:
+      {{- if $values.appVolumeMounts -}}
+        {{- range $name, $volume := $values.appVolumeMounts -}}
+          {{ if (default true $volume.enabled) }}
+        - name: {{ $name }}
+            {{ if or $volume.emptyDir $.emptyDirVolumes }}
+          emptyDir: {}
+            {{- else -}}
+          hostPath:
+              {{ if $volume.hostPathEnabled }}
+            path: {{ required "hostPath not set" $volume.hostPath }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{- end -}}
