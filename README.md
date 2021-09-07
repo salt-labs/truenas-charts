@@ -2,7 +2,7 @@
 
 Unofficial Helm charts for TrusNAS SCALE
 
-**WARNING:** Use at your own risk.
+**WARNING:** Use at your own risk, this is just a playground of charts.
 
 ## Charts
 
