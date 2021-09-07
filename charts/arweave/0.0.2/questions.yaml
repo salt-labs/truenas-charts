@@ -1,0 +1,192 @@
+groups:
+
+  - name: "Storage"
+    description: "Configure Storage"
+
+  - name: "Environment"
+    description: "Set the environment that will be visible to the container"
+
+questions:
+
+  - variable: appVolumeMounts
+    label: "Arweave Storage"
+    description: "Arweave storage configuration"
+    group: "Storage"
+    schema:
+      type: dict
+      required: true
+      attrs:
+
+        - variable: data
+          label: "Arweave Data Directory"
+          schema:
+            type: dict
+            attrs:
+
+              - variable: datasetName
+                label: "ZFS Dataset Name"
+                schema:
+                  type: string
+                  hidden: true
+                  $ref:
+                    - "normalize/ixVolume"
+                  show_if: [["hostPathEnabled", "=", false]]
+                  default: "arweave"
+                  editable: false
+
+              - variable: mountPath
+                label: "Data Dir Mount Path"
+                description: "Path where the volume will be mounted inside the pod"
+                schema:
+                  type: path
+                  hidden: true
+                  editable: false
+                  default: "/data"
+
+              - variable: hostPathEnabled
+                label: "Enable Custom Host Path for Arweave Data Volume"
+                schema:
+                  type: boolean
+                  default: false
+                  show_subquestions_if: true
+                  subquestions:
+                    - variable: hostPath
+                      label: "Host Path for Arweave Data Volume"
+                      schema:
+                        type: hostpath
+                        required: true
+
+  - variable: arweaveRewardAddress
+    label: "Arweave Reward Address"
+    description: "The address to send mining rewards to"
+    group: "Environment"
+    schema:
+      type: string
+      required: true
+      default: UNSET
+      min.length: 44
+      max.length: 100
+
+  - variable: arweaveHostPort
+    label: "Arweave Host Port"
+    description: "The Host Port Arweave is listening on"
+    group: "Environment"
+    schema:
+      type: integer
+      required: true
+      default: 1984
+      min.length: 3
+      max.length: 5
+
+  - variable: logLevel
+    label: "Arweave log level"
+    description: "The level of log output displayed in the container console"
+    group: "Environment"
+    schema:
+      type: string
+      required: false
+      default: "INFO"
+
+  - variable: arweaveSyncEnabled
+    label: "Enable weave sync"
+    description: "Enable sync only mode to download the weave faster without mining"
+    group: "Environment"
+    schema:
+      type: boolean
+      required: false
+      default: false
+
+  - variable: arweaveMineJobs
+    label: "Arweave Mine Jobs"
+    description: "The number of sync jobs during mining mode"
+    group: "Environment"
+    schema:
+      type: integer
+      required: false
+      default: 25
+
+  - variable: arweaveSyncMineJobs
+    label: "Arweave Sync and Mine Jobs"
+    description: "The number of sync jobs during sync and mining mode"
+    group: "Environment"
+    schema:
+      type: integer
+      required: false
+      default: 50
+
+  - variable: arweaveSyncJobs
+    label: "Arweave Sync Jobs"
+    description: "The number of sync jobs during sync only mode"
+    group: "Environment"
+    schema:
+      type: integer
+      required: false
+      default: 100
+
+  - variable: arweavePeersNum
+    label: "Arweave Peers number"
+    description: "The number of arweave peers to use"
+    group: "Environment"
+    schema:
+      type: integer
+      required: false
+      default: 50
+
+  - variable: resources
+    label: "Arweave Resources"
+    description: "Arweave Resourced"
+    group: "Resources"
+    schema:
+      type: dict
+      required: true
+      attrs:
+
+        - variable: requests
+          label: "Resource requests"
+          schema:
+            type: dict
+            required: true
+            attrs:
+
+              - variable: cpu
+                label: "CPU Requests"
+                schema:
+                  type: string
+                  hidden: false
+                  required: true
+                  default: "1"
+                  editable: true
+
+              - variable: memory
+                label: "Memory Requests"
+                schema:
+                  type: string
+                  hidden: false
+                  required: true
+                  default: "8Gi"
+                  editable: true
+
+        - variable: limits
+          label: "Resource limits"
+          schema:
+            type: dict
+            required: true
+            attrs:
+
+              - variable: cpu
+                label: "CPU Limits"
+                schema:
+                  type: string
+                  hidden: false
+                  required: true
+                  default: "8"
+                  editable: true
+
+              - variable: memory
+                label: "Memory Limits"
+                schema:
+                  type: string
+                  hidden: false
+                  required: true
+                  default: "32Gi"
+                  editable: true

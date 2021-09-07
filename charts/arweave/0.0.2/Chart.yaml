@@ -1,0 +1,21 @@
+
+apiVersion: v2
+name: arweave
+description: Unofficial Helm Chart for the Arweave Storage Network
+type: application
+version: 0.0.2
+appVersion: 2.5.0.0
+home: https://www.arweave.org/
+icon: https://www.arweave.org/nav-logo.svg
+
+keywords:
+  - storage
+  - crypto
+  - blockchain
+
+sources:
+- https://github.com/ArweaveTeam/arweave
+- https://github.com/salt-labs/truenas-charts
+
+maintainers:
+  - name: Salt Labs
