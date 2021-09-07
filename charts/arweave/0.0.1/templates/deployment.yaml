@@ -51,19 +51,19 @@ spec:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
+          env:
+            - name: ARWEAVE_REWARD_ADDRESS
+              value: {{ $values.arweaveRewardAddress }}
           volumeMounts:
 {{- if $values.appVolumeMounts -}}
   {{- range $name, $volume := $values.appVolumeMounts -}}
-    {{ if (default true $volume.enabled) }}
             - name: {{ $name }}
               mountPath: {{ required "hostPath not set" $volume.mountPath }}
-    {{ end }}
   {{ end }}
 {{- end -}}
       volumes:
 {{- if $values.appVolumeMounts -}}
   {{- range $name, $volume := $values.appVolumeMounts -}}
-    {{ if (default true $volume.enabled) }}
         - name: {{ $name }}
       {{ if or $volume.emptyDir $.emptyDirVolumes }}
           emptyDir: {}
@@ -73,6 +73,5 @@ spec:
             path: {{ required "hostPath not set" $volume.hostPath }}
         {{ end }}
       {{ end }}
-    {{ end }}
   {{ end }}
 {{- end -}}
