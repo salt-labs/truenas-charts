@@ -53,10 +53,10 @@ spec:
             - name: ARWEAVE_REWARD_ADDRESS
               value: {{ required "Reward address not set" .Values.arweaveRewardAddress }}
           volumeMounts:
-            - name: data_dir
-              mountPath: {{ required "hostPath not set" .Values.appVolumeMounts.data.mountPath }}
+            - name: data
+              mountPath: {{ required "mountPath not set" .Values.appVolumeMounts.data.mountPath }}
       volumes:
-        - name: data_dir
+        - name: data
           {{ if .Values.appVolumeMounts.data.emptyDir }}
           emptyDir: {}
           {{ else if .Values.appVolumeMounts.data.hostPathEnabled }}
