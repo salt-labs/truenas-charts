@@ -16,6 +16,7 @@ questions:
       type: dict
       required: true
       attrs:
+
         - variable: arweaveDataDir
           label: "Arweave Data Directory"
           schema:

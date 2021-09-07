@@ -52,21 +52,27 @@ spec:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
           volumeMounts:
-            - name: arweaveDataDir
-              mountPath: /data
+{{- if $values.appVolumeMounts -}}
+  {{- range $name, $volume := $values.appVolumeMounts -}}
+    {{ if (default true $volume.enabled) }}
+            - name: {{ $name }}
+              mountPath: {{ required "hostPath not set" $volume.mountPath }}
+    {{ end }}
+  {{ end }}
+{{- end -}}
       volumes:
-      {{- if $values.appVolumeMounts -}}
-        {{- range $name, $volume := $values.appVolumeMounts -}}
-          {{ if (default true $volume.enabled) }}
+{{- if $values.appVolumeMounts -}}
+  {{- range $name, $volume := $values.appVolumeMounts -}}
+    {{ if (default true $volume.enabled) }}
         - name: {{ $name }}
-            {{ if or $volume.emptyDir $.emptyDirVolumes }}
+      {{ if or $volume.emptyDir $.emptyDirVolumes }}
           emptyDir: {}
-            {{- else -}}
+      {{- else -}}
           hostPath:
-              {{ if $volume.hostPathEnabled }}
+        {{ if $volume.hostPathEnabled }}
             path: {{ required "hostPath not set" $volume.hostPath }}
-              {{ end }}
-            {{ end }}
-          {{ end }}
         {{ end }}
-      {{- end -}}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{- end -}}
