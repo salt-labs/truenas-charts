@@ -53,23 +53,15 @@ spec:
             - name: ARWEAVE_REWARD_ADDRESS
               value: {{ required "Reward address not set" .Values.arweaveRewardAddress }}
           volumeMounts:
-{{- if .Values.appVolumeMounts -}}
-  {{- range $name, $volume := .Values.appVolumeMounts -}}
-            - name: {{ $name }}
-              mountPath: {{ required "hostPath not set" $volume.mountPath }}
-  {{ end }}
-{{- end -}}
+            - name: data_dir
+              mountPath: {{ required "hostPath not set" .Values.appVolumeMounts.data.mountPath }}
       volumes:
-{{- if .Values.appVolumeMounts -}}
-  {{- range $name, $volume := .Values.appVolumeMounts -}}
-        - name: {{ $name }}
-      {{ if or $volume.emptyDir $.emptyDirVolumes }}
+        - name: data_dir
+          {{ if .Values.appVolumeMounts.data.emptyDir }}
           emptyDir: {}
-      {{- else -}}
+          {{ else if .Values.appVolumeMounts.data.hostPathEnabled }}
           hostPath:
-        {{ if $volume.hostPathEnabled }}
-            path: {{ required "hostPath not set" $volume.hostPath }}
-        {{ end }}
-      {{ end }}
-  {{ end }}
-{{- end -}}
+            path: {{ .Values.appVolumeMounts.data.hostPath }}
+          {{ else if .Values.appVolumeMounts.data.datasetName }}
+            path: {{ .Values.appVolumeMounts.data.datasetName }}
+          {{ end }}
