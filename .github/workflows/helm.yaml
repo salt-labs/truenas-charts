@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch base branch history
-        run: git fetch origin master:master
+        run: git fetch origin master
 
       - name: Setup catalog validation
         run: |
