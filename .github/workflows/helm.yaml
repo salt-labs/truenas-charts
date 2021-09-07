@@ -1,12 +1,26 @@
-name: Charts-CI
+##################################################
+# Name: helm.yaml
+# Description: Validate Helm Chart
+##################################################
 
-on: [pull_request]
+
+name: Validate Helm Chart
+
+on:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - reopened
 
 jobs:
+
   deploy-charts:
+
     runs-on: ubuntu-20.04
 
     steps:
+
       - name: Install Helm
         run: /bin/bash -c "curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash"
 
