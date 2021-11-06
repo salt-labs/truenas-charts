@@ -6,6 +6,9 @@ groups:
   - name: "Environment"
     description: "Set the environment that will be visible to the container"
 
+  - name: "Resources"
+    description: "Sets the resources for Pods"
+
 questions:
 
   - variable: appVolumeMounts
