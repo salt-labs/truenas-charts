@@ -12,3 +12,11 @@ appVolumeMounts:
   data:
     emptyDir: true
     mountPath: /data
+
+resources:
+  requests:
+    cpu: "2"
+    memory: "8Gi"
+  limits:
+    cpu: "8"
+    memory: "32Gi"
