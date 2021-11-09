@@ -6,14 +6,7 @@ image:
 
 updateStrategy: Recreate
 
-# TODO: Add to questions.yaml
-resources:
-  limits:
-    cpu: "8"
-    memory: "32Gi"
-  requests:
-    cpu: "2"
-    memory: "8Gi"
+arweaveRewardAddress: "0000000000000000000000000"
 
 appVolumeMounts:
   data:
