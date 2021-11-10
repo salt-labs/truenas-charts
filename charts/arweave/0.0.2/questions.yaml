@@ -9,6 +9,17 @@ groups:
   - name: "Resources"
     description: "Sets the resources for Pods"
 
+portals:
+
+  web_portal:
+    protocols:
+      - "https"
+    host:
+      - "www.arweave.org"
+    ports:
+      - "443"
+    path: ""
+
 questions:
 
   - variable: appVolumeMounts
@@ -75,7 +86,7 @@ questions:
     description: "The Host Port Arweave is listening on"
     group: "Environment"
     schema:
-      type: integer
+      type: int
       required: true
       default: 1984
       min.length: 3
@@ -104,7 +115,7 @@ questions:
     description: "The number of sync jobs during mining mode"
     group: "Environment"
     schema:
-      type: integer
+      type: int
       required: false
       default: 25
 
@@ -113,7 +124,7 @@ questions:
     description: "The number of sync jobs during sync and mining mode"
     group: "Environment"
     schema:
-      type: integer
+      type: int
       required: false
       default: 50
 
@@ -122,7 +133,7 @@ questions:
     description: "The number of sync jobs during sync only mode"
     group: "Environment"
     schema:
-      type: integer
+      type: int
       required: false
       default: 100
 
@@ -131,7 +142,7 @@ questions:
     description: "The number of arweave peers to use"
     group: "Environment"
     schema:
-      type: integer
+      type: int
       required: false
       default: 50
 
