@@ -1,0 +1,34 @@
+
+image:
+  pullPolicy: Always
+  repository: ghcr.io/salt-labs/arweave-miner
+  tag: "2.5.0.0"
+
+updateStrategy: Recreate
+
+appVolumeMounts:
+  data:
+    emptyDir: true
+    mountPath: /data
+
+#arweaveRewardAddress: "0000000000000000000000000"
+
+arweaveHostPort: 1984
+
+logLevel: "INFO"
+
+arweaveSyncEnabled: "false"
+
+arweaveMineJobs: 25
+arweaveSyncMineJobs: 50
+arweaveSyncJobs: 100
+
+arweavePeersNum: 100
+
+resources:
+  requests:
+    cpu: "2"
+    memory: "8Gi"
+  limits:
+    cpu: "8"
+    memory: "32Gi"
