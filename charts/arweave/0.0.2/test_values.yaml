@@ -6,12 +6,24 @@ image:
 
 updateStrategy: Recreate
 
-arweaveRewardAddress: "0000000000000000000000000"
-
 appVolumeMounts:
   data:
     emptyDir: true
     mountPath: /data
+
+arweaveRewardAddress: "0000000000000000000000000"
+
+arweaveHostPort: 1984
+
+logLevel: "DEBUG"
+
+arweaveSyncEnabled: false
+
+arweaveMineJobs: 25
+arweaveSyncMineJobs: 50
+arweaveSyncJobs: 100
+
+arweavePeersNum: 100
 
 resources:
   requests:
