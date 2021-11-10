@@ -17,7 +17,7 @@ arweaveHostPort: 1984
 
 logLevel: "DEBUG"
 
-arweaveSyncEnabled: false
+arweaveSyncEnabled: "false"
 
 arweaveMineJobs: 25
 arweaveSyncMineJobs: 50
