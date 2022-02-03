@@ -4,7 +4,7 @@ name: arweave
 description: Unofficial Helm Chart for the Arweave Storage Network
 type: application
 version: 0.0.3
-appVersion: 2.5.0.0
+appVersion: 2.5.1.0
 home: https://www.arweave.org/
 icon: https://www.arweave.org/nav-logo.svg
 

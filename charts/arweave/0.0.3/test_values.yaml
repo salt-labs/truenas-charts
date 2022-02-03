@@ -2,7 +2,7 @@
 image:
   pullPolicy: Always
   repository: ghcr.io/salt-labs/arweave-miner
-  tag: "2.5.0.0"
+  tag: "2.5.1.0"
 
 updateStrategy: Recreate
 
