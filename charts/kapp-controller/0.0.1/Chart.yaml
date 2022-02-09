@@ -1,0 +1,19 @@
+
+apiVersion: v2
+name: kapp-controller
+description: Unofficial Helm Chart for kapp-controller
+type: application
+version: 0.0.1
+appVersion: v0.32.0
+home: https://carvel.dev/
+icon: https://carvel.dev/img/logo.svg
+
+keywords:
+  - gitops
+
+sources:
+- https://github.com/vmware-tanzu/carvel-kapp-controller
+- https://github.com/salt-labs/truenas-charts
+
+maintainers:
+  - name: Salt Labs
