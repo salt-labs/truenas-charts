@@ -11,7 +11,7 @@ metadata:
 spec:
   serviceAccountName: {{ .Values.namespace }}-sa
   fetch:
-  {{- if .Values.fetch.git }}
+  {{- if .Values.git.enabled }}
     - git:
       url: {{ .Values.git.repo }}
       ref: {{ .Values.git.branch }}
