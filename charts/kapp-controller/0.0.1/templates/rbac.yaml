@@ -1,20 +1,35 @@
 ---
 
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.namespace }}-sa
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kapp.k14s.io/change-group: "rbac"
+    kapp.k14s.io/change-rule.create-order: "upsert after upserting namespace"
+    kapp.k14s.io/change-rule.delete-order: "delete before deleting namespace"
+
+---
+
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.namespace }}-app-cr
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kapp.k14s.io/change-group: "rbac"
 rules:
-- apiGroups:
-	- ""
-  resources:
-  	- "configmaps"
-  verbs:
-    - "get"
-	- "list"
-	- "create"
-	- "update"
-	- "delete"
+  - apiGroups:
+    - ""
+    resources:
+      - "configmaps"
+    verbs:
+      - "get"
+      - "list"
+      - "create"
+      - "update"
+      - "delete"
 
 ---
 
@@ -22,11 +37,13 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.namespace }}-app-cr
+  annotations:
+    kapp.k14s.io/change-group: "rbac"
 subjects:
   - kind: ServiceAccount
-	name: {{ .Values.namespace }}-sa
-	namespace: {{ .Values.namespace }}
+    name: {{ .Values.namespace }}-sa
+    namespace: {{ .Values.namespace }}
 roleRef:
+  apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: {{ .Values.namespace }}-app-cr
-  apiGroup: rbac.authorization.k8s.io

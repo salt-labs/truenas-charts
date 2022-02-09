@@ -4,6 +4,16 @@ updateStrategy: Recreate
 # The namespace where the applications are managed from.
 namespace: gitops
 
+kapp:
+  paused: false
+  canceled: false
+  noopDelete: false
+  #cluster:
+  #  namespace:
+  #  kubeconfigSecretRef:
+  #    name:
+  #    key:
+
 git:
 
   enabled: false
