@@ -5,7 +5,7 @@ updateStrategy: Recreate
 namespace: gitops
 
 kapp:
-  pause: false
+  paused: false
   canceled: false
   noopDelete: false
   #cluster:

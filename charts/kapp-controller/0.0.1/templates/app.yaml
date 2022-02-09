@@ -11,7 +11,7 @@ metadata:
     kapp.k14s.io/change-rule.delete-order: "delete before deleting rbac"
 
 spec:
-  pause: {{ .Values.kapp.pause | default "false" }}
+  paused: {{ .Values.kapp.paused | default "false" }}
   canceled: {{ .Values.kapp.canceled | default "false" }}
   noopDelete: {{ .Values.kapp.noopDelete | default "false" }}
   syncPeriod: 1m
