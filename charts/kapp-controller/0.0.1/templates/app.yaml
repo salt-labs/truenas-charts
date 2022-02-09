@@ -1,6 +1,6 @@
 ---
 
-apiVersion: apps.kappctrl.k14s.io
+apiVersion: kappctrl.k14s.io
 kind: App
 metadata:
   name: {{ .Values.namespace }}
