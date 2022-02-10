@@ -45,7 +45,7 @@ spec:
 
   {{- if .Values.helm.enabled }}
     - helm:
-  {{- end -}}
+  {{- end }}
 
   template:
     - ytt: {}
