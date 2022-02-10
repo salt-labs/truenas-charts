@@ -32,10 +32,10 @@ spec:
       url: {{ .Values.git.repo }}
       ref: {{ .Values.git.branch }}
       subPath: {{ .Values.git.path }}
-    {{- if .Values.git.secretRef }}
+    {{- if .Values.secrets.secretRef }}
       secretRef:
-        name: {{ .Values.git.secretRef.name }}
-        namespace: {{ .Values.git.secretRef.namespace }}
+        name: {{ .Values.secrets.secretRef.name }}
+        namespace: {{ .Values.secrets.secretRef.namespace }}
     {{- end }}
   {{- end }}
 

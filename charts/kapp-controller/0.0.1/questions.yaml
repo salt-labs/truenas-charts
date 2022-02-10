@@ -3,6 +3,9 @@ groups:
   - name: "fetch"
     description: "Configure the fetch location"
 
+  - name: "secrets"
+    description: "Configure secrets for fetch"
+
   - name: "template"
     description: "Configure the ytt template"
 
@@ -25,11 +28,11 @@ questions:
     group: "fetch"
     schema:
       type: dict
-      required: true
+      required: false
       attrs:
 
         - variable: enabled
-          label: "Enable fetch using git"
+          label: "Enable git configuration"
           schema:
             type: boolean
             default: false
@@ -43,6 +46,7 @@ questions:
                   hidden: false
                   required: true
                   type: string
+
               - variable: branch
                 label: "git branch"
                 schema:
@@ -50,48 +54,105 @@ questions:
                   hidden: false
                   required: true
                   type: string
+
               - variable: path
                 label: "folder path"
                 schema:
+                  default: "gitops"
                   editable: true
                   hidden: false
                   required: true
                   type: string
+
+  - variable: imgpkg
+    label: "Fetch using imgpkg"
+    description: "kapp-controller fetch configuration using imgpkg"
+    group: "fetch"
+    schema:
+      type: dict
+      required: false
+      attrs:
+
+        - variable: enabled
+          label: "Enable imgpkg configuration"
+          schema:
+            type: boolean
+            default: false
+            show_subquestions_if: true
+            subquestions:
+
+  - variable: helm
+    label: "Fetch using helm"
+    description: "kapp-controller fetch configuration using helm"
+    group: "fetch"
+    schema:
+      type: dict
+      required: false
+      attrs:
+
+        - variable: enabled
+          label: "Enable helm configuration"
+          schema:
+            type: boolean
+            default: false
+            show_subquestions_if: true
+            subquestions:
+
+  - variable: secrets
+    label: "Secret configuration"
+    description: "Secret configuration for fetch"
+    group: "secrets"
+    schema:
+      type: dict
+      required: false
+      attrs:
+
+        - variable: enabled
+          label: "Enable secrets configuration"
+          schema:
+            type: boolean
+            default: false
+            show_subquestions_if: true
+            subquestions:
+
               - variable: secretRef
                 label: "Secret reference"
                 schema:
                   type: dict
-                  required: false
+                  required: true
                   attrs:
+
                     - variable: name
                       label: "Secret name"
                       schema:
                         default: gitops
-                        editable: true
-                        hidden: false
+                        editable: false
+                        hidden: true
                         type: string
+
                     - variable: namespace
                       label: "Secret namespace"
                       schema:
                         default: gitops
-                        editable: true
-                        hidden: false
+                        editable: false
+                        hidden: true
                         type: string
 
-              - variable: secrets
-                label: "git secrets"
+              - variable: http
+                label: "Configure HTTP secrets"
                 schema:
                   type: dict
                   required: false
                   attrs:
 
-                    - variable: http
+                    - variable: enabled
                       label: "Enable HTTP secrets"
                       schema:
                         type: boolean
                         default: false
                         show_subquestions_if: true
                         subquestions:
+
                           - variable: username
                             label: "username"
                             schema:
@@ -100,6 +161,7 @@ questions:
                               hidden: false
                               type: string
                               required: true
+
                           - variable: password
                             label: "password"
                             schema:
@@ -109,13 +171,21 @@ questions:
                               type: string
                               required: true
 
-                    - variable: ssh
+              - variable: ssg
+                label: "Configure SSH secrets"
+                schema:
+                  type: dict
+                  required: false
+                  attrs:
+
+                    - variable: enabled
                       label: "Enable SSH secrets"
                       schema:
                         type: boolean
                         default: false
                         show_subquestions_if: true
                         subquestions:
+
                           - variable: key
                             label: "SSH key"
                             schema:

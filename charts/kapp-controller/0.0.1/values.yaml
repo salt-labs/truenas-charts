@@ -22,30 +22,38 @@ git:
   #repo: https://github.com/salt-labs/tanzu
   #branch: origin/trunk
   #path: gitops
-  #secretRef:
-  #  name: gitops
-  #  namespace: gitops
 
   # Example using SSH
   #repo: git@github.com:salt-labs/tanzu.git
   #  branch: origin/trunk
   #  path: gitops
-  #  secretRef:
-  #    name: gitops
-  #    namespace: gitops
 
-  #secrets:
+imgpkg:
 
-    # git using HTTPS with PAT
-    #http:
-    #  enabled: false
-    #  username: username
-    #  password: password
+  enabled: false
 
-    # git using SSH
-    #ssh:
-    #  enabled: false
-    #  key: |
-    #    -----BEGIN OPENSSH PRIVATE KEY-----
-    #    PRIVATE KEY GOES HERE
-    #    -----END OPENSSH PRIVATE KEY-----
+helm:
+
+  enabled: false
+
+secrets:
+
+  enabled: false
+
+  secretRef:
+    name: gitops
+    namespace: gitops
+
+  # git using HTTPS with PAT
+  http:
+    enabled: false
+  #  username: username
+  #  password: password
+
+  # git using SSH
+  ssh:
+    enabled: false
+  #  key: |
+  #    -----BEGIN OPENSSH PRIVATE KEY-----
+  #    PRIVATE KEY GOES HERE
+  #    -----END OPENSSH PRIVATE KEY-----
