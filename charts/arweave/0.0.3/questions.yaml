@@ -117,7 +117,7 @@ questions:
     schema:
       type: int
       required: false
-      default: 25
+      default: 5
 
   - variable: arweaveSyncMineJobs
     label: "Arweave Sync and Mine Jobs"
@@ -126,7 +126,7 @@ questions:
     schema:
       type: int
       required: false
-      default: 50
+      default: 25
 
   - variable: arweaveSyncJobs
     label: "Arweave Sync Jobs"

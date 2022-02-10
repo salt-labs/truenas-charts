@@ -57,19 +57,19 @@ spec:
               memory: {{ .Values.resources.limits.memory }}
           env:
             - name: LOGLEVEL
-              value: "{{ .Values.logLevel }}"
+              value: {{ .Values.logLevel | quote }}
             - name: ARWEAVE_SYNC_ENABLED
-              value: "{{ .Values.arweaveSyncEnabled }}"
+              value: {{ .Values.arweaveSyncEnabled | quote }}
             - name: ARWEAVE_MINE_JOBS
-              value: "{{ .Values.arweaveMineJobs }}"
+              value: {{ .Values.arweaveMineJobs }}
             - name: ARWEAVE_SYNC_MINE_JOBS
-              value: "{{ .Values.arweaveSyncMineJobs }}"
+              value: {{ .Values.arweaveSyncMineJobs }}
             - name: ARWEAVE_SYNC_JOBS
-              value: "{{ .Values.arweaveSyncJobs }}"
+              value: {{ .Values.arweaveSyncJobs }}
             - name: ARWEAVE_PEERS_NUM
-              value: "{{ .Values.arweavePeersNum }}"
+              value: {{ .Values.arweavePeersNum }}
             - name: ARWEAVE_REWARD_ADDRESS
-              value: "{{ required "Reward address not set!" .Values.arweaveRewardAddress }}"
+              value: {{ required "Reward address not set!" .Values.arweaveRewardAddress | quote }}
           volumeMounts:
             - name: data
               mountPath: {{ required "mountPath not set" .Values.appVolumeMounts.data.mountPath }}
