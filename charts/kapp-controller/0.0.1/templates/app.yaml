@@ -5,7 +5,7 @@ kind: App
 
 metadata:
   name: {{ .Chart.Name }}
-  namespace: {{ .Chart.Name }}
+  #namespace: {{ .Chart.Name }}
   annotations:
     kapp.k14s.io/change-rule.create-order: "upsert after upserting crd"
     kapp.k14s.io/change-rule.delete-order: "delete before deleting crd"
@@ -36,7 +36,7 @@ spec:
     {{- if .Values.secrets.enabled }}
       secretRef:
         name: {{ .Values.secrets.secretRef.name | quote }}
-        namespace: {{ .Values.secrets.secretRef.namespace |quote }}
+        #namespace: {{ .Values.secrets.secretRef.namespace | quote }}
     {{- end }}
   {{- end }}
 
