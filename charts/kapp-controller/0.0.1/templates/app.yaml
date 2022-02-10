@@ -32,12 +32,20 @@ spec:
       url: {{ .Values.git.repo }}
       ref: {{ .Values.git.branch }}
       subPath: {{ .Values.git.path }}
-    {{- if .Values.secrets.secretRef }}
+    {{- if .Values.secrets.enabled }}
       secretRef:
         name: {{ .Values.secrets.secretRef.name }}
         namespace: {{ .Values.secrets.secretRef.namespace }}
     {{- end }}
   {{- end }}
+
+  {{- if .Values.imgpkg.enabled }}
+    - imgpkgBundle:
+  {{- end -}}
+
+  {{- if .Values.helm.enabled }}
+    - helm:
+  {{- end -}}
 
   template:
     - ytt: {}
