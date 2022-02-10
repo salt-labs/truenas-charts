@@ -1,3 +1,4 @@
+---
 
 updateStrategy: Recreate
 
@@ -8,7 +9,52 @@ kapp:
   paused: false
   canceled: false
   noopDelete: false
+  #cluster:
+  #  namespace:
+  #  kubeconfigSecretRef:
+  #    name:
+  #    key:
 
 git:
 
   enabled: false
+
+  # Example using HTTPS
+  #repo: https://github.com/salt-labs/tanzu
+  #branch: origin/trunk
+  #path: gitops
+
+  # Example using SSH
+  #repo: git@github.com:salt-labs/tanzu.git
+  #  branch: origin/trunk
+  #  path: gitops
+
+imgpkg:
+
+  enabled: false
+
+helm:
+
+  enabled: false
+
+secrets:
+
+  enabled: false
+
+  secretRef:
+    name: gitops
+    namespace: gitops
+
+  # git using HTTPS with PAT
+  http:
+    enabled: false
+  #  username: username
+  #  password: password
+
+  # git using SSH
+  ssh:
+    enabled: false
+  #  key: |
+  #    -----BEGIN OPENSSH PRIVATE KEY-----
+  #    PRIVATE KEY GOES HERE
+  #    -----END OPENSSH PRIVATE KEY-----
