@@ -3,8 +3,8 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ .Values.namespace }}-sa
-  namespace: {{ .Values.namespace }}
+  name: {{ .Chart.Name }}-sa
+  namespace: {{ .Chart.Name }}
   annotations:
     kapp.k14s.io/change-group: "rbac"
     kapp.k14s.io/change-rule.create-order: "upsert after upserting namespace"
@@ -15,8 +15,8 @@ metadata:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.namespace }}-app-cr
-  namespace: {{ .Values.namespace }}
+  name: {{ .Chart.Name }}-app-cr
+  namespace: {{ .Chart.Name }}
   annotations:
     kapp.k14s.io/change-group: "rbac"
 rules:
@@ -36,14 +36,14 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.namespace }}-app-cr
+  name: {{ .Chart.Name }}-app-cr
   annotations:
     kapp.k14s.io/change-group: "rbac"
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.namespace }}-sa
-    namespace: {{ .Values.namespace }}
+    name: {{ .Chart.Name }}-sa
+    namespace: {{ .Chart.Name }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ .Values.namespace }}-app-cr
+  name: {{ .Chart.Name }}-app-cr
