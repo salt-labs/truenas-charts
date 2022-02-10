@@ -8,42 +8,7 @@ kapp:
   paused: false
   canceled: false
   noopDelete: false
-  #cluster:
-  #  namespace:
-  #  kubeconfigSecretRef:
-  #    name:
-  #    key:
 
 git:
 
   enabled: false
-
-  # Example using HTTPS
-  repo: https://github.com/salt-labs/tanzu
-  branch: origin/trunk
-  path: gitops
-  secretRef:
-    name: gitops
-    namespace: gitops
-
-  # Example using SSH
-  #repo: git@github.com:salt-labs/tanzu.git
-  #  branch: origin/trunk
-  #  path: gitops
-  #  secretRef:
-  #    name: gitops
-  #    namespace: gitops
-
-  secrets:
-
-    # git using HTTPS with PAT
-    http:
-      username: username
-      password: password
-
-    # git using SSH
-    #ssh:
-    #  key: |
-    #    -----BEGIN OPENSSH PRIVATE KEY-----
-    #    PRIVATE KEY GOES HERE
-    #    -----END OPENSSH PRIVATE KEY-----

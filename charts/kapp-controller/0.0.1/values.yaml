@@ -19,12 +19,12 @@ git:
   enabled: false
 
   # Example using HTTPS
-  repo: https://github.com/salt-labs/tanzu
-  branch: origin/trunk
-  path: gitops
-  secretRef:
-    name: gitops
-    namespace: gitops
+  #repo: https://github.com/salt-labs/tanzu
+  #branch: origin/trunk
+  #path: gitops
+  #secretRef:
+  #  name: gitops
+  #  namespace: gitops
 
   # Example using SSH
   #repo: git@github.com:salt-labs/tanzu.git
@@ -34,15 +34,17 @@ git:
   #    name: gitops
   #    namespace: gitops
 
-  secrets:
+  #secrets:
 
     # git using HTTPS with PAT
-    http:
-      username: username
-      password: password
+    #http:
+    #  enabled: false
+    #  username: username
+    #  password: password
 
     # git using SSH
     #ssh:
+    #  enabled: false
     #  key: |
     #    -----BEGIN OPENSSH PRIVATE KEY-----
     #    PRIVATE KEY GOES HERE
