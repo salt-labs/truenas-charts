@@ -1,4 +1,5 @@
 ---
+
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -63,7 +64,9 @@ spec:
     storage: true
     subresources:
       status: {}
+
 ---
+
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -497,7 +500,9 @@ spec:
     storage: true
     subresources:
       status: {}
+
 ---
+
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -1007,7 +1012,9 @@ spec:
     storage: true
     subresources:
       status: {}
+
 ---
+
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -1172,7 +1179,9 @@ spec:
     storage: true
     subresources:
       status: {}
+
 ---
+
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -1466,69 +1475,3 @@ spec:
     storage: true
     subresources:
       status: {}
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  annotations:
-    kapp-controller.carvel.dev/version: v0.32.0
-    kbld.k14s.io/images: |
-      - origins:
-        - local:
-            path: /home/runner/work/carvel-kapp-controller/src/github.com/vmware-tanzu/carvel-kapp-controller
-        - git:
-            dirty: false
-            remoteURL: https://github.com/vmware-tanzu/carvel-kapp-controller
-            sha: c4c5ceb336b7cb28c2164c99feb97a776579edf2
-            tags:
-            - v0.32.0
-        url: ghcr.io/vmware-tanzu/carvel-kapp-controller@sha256:8e56eb65782697dd7aef3d9ab1df3294ade42ca41c5ecb38ff2cd579b3221d82
-  name: kapp-controller
-  namespace: kapp-controller
-spec:
-  replicas: 1
-  revisionHistoryLimit: 0
-  selector:
-    matchLabels:
-      app: kapp-controller
-  template:
-    metadata:
-      labels:
-        app: kapp-controller
-    spec:
-      containers:
-      - args:
-        - -packaging-global-namespace=kapp-controller-packaging-global
-        - -enable-api-priority-and-fairness=True
-        env:
-        - name: KAPPCTRL_MEM_TMP_DIR
-          value: /etc/kappctrl-mem-tmp
-        - name: KAPPCTRL_SYSTEM_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: KAPPCTRL_API_PORT
-          value: "10350"
-        image: ghcr.io/vmware-tanzu/carvel-kapp-controller@sha256:8e56eb65782697dd7aef3d9ab1df3294ade42ca41c5ecb38ff2cd579b3221d82
-        name: kapp-controller
-        ports:
-        - containerPort: 10350
-          name: api
-          protocol: TCP
-        resources:
-          requests:
-            cpu: 120m
-            memory: 100Mi
-        securityContext:
-          runAsGroup: 2000
-          runAsUser: 1000
-        volumeMounts:
-        - mountPath: /etc/kappctrl-mem-tmp
-          name: template-fs
-      securityContext:
-        fsGroup: 3000
-      serviceAccount: kapp-controller-sa
-      volumes:
-      - emptyDir:
-          medium: Memory
-        name: template-fs

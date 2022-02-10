@@ -1,14 +1,19 @@
 ---
+
 apiVersion: v1
 kind: Namespace
 metadata:
   name: kapp-controller
+
 ---
+
 apiVersion: v1
 kind: Namespace
 metadata:
   name: kapp-controller-packaging-global
+
 ---
+
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
@@ -21,7 +26,9 @@ spec:
     namespace: kapp-controller
   version: v1alpha1
   versionPriority: 100
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -34,7 +41,9 @@ spec:
     targetPort: api
   selector:
     app: kapp-controller
+
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -100,13 +109,17 @@ spec:
       - emptyDir:
           medium: Memory
         name: template-fs
+
 ---
+
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: kapp-controller-sa
   namespace: kapp-controller
+
 ---
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -224,7 +237,9 @@ rules:
   verbs:
   - list
   - watch
+
 ---
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -237,7 +252,9 @@ subjects:
 - kind: ServiceAccount
   name: kapp-controller-sa
   namespace: kapp-controller
+
 ---
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -250,7 +267,9 @@ subjects:
 - kind: ServiceAccount
   name: kapp-controller-sa
   namespace: kapp-controller
+
 ---
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
