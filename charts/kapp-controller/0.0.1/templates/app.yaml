@@ -27,15 +27,16 @@ spec:
 
   # TODO: https://carvel.dev/kapp-controller/docs/v0.32.0/app-spec/
   fetch:
+
   {{- if .Values.git.enabled }}
     - git:
-      url: {{ .Values.git.repo }}
-      ref: {{ .Values.git.branch }}
-      subPath: {{ .Values.git.path }}
+      url: {{ .Values.git.repo | quote }}
+      ref: {{ .Values.git.branch | quote }}
+      subPath: {{ .Values.git.path | quote }}
     {{- if .Values.secrets.enabled }}
       secretRef:
-        name: {{ .Values.secrets.secretRef.name }}
-        namespace: {{ .Values.secrets.secretRef.namespace }}
+        name: {{ .Values.secrets.secretRef.name | quote }}
+        namespace: {{ .Values.secrets.secretRef.namespace |quote }}
     {{- end }}
   {{- end }}
 

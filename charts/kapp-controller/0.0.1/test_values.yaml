@@ -17,12 +17,12 @@ kapp:
 
 git:
 
-  enabled: false
+  enabled: true
 
   # Example using HTTPS
-  #repo: https://github.com/salt-labs/tanzu
-  #branch: origin/trunk
-  #path: gitops
+  repo: https://github.com/salt-labs/tanzu
+  branch: origin/trunk
+  path: gitops
 
   # Example using SSH
   #repo: git@github.com:salt-labs/tanzu.git
@@ -39,7 +39,7 @@ helm:
 
 secrets:
 
-  enabled: false
+  enabled: true
 
   secretRef:
     name: gitops
