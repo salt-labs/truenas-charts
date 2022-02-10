@@ -81,6 +81,14 @@ questions:
             show_subquestions_if: true
             subquestions:
 
+              - variable: todo
+                label: "TO DO"
+                schema:
+                  default: "Sorry, this hasn't been implemented yet!"
+                  hidden: false
+                  required: false
+                  type: string
+
   - variable: helm
     label: "Fetch using helm"
     description: "kapp-controller fetch configuration using helm"
@@ -97,6 +105,14 @@ questions:
             default: false
             show_subquestions_if: true
             subquestions:
+
+              - variable: todo
+                label: "TO DO"
+                schema:
+                  default: "Sorry, this hasn't been implemented yet!"
+                  hidden: false
+                  required: false
+                  type: string
 
   - variable: secrets
     label: "Secret configuration"
