@@ -49,13 +49,21 @@ spec:
           resources:
             {{ if .Values.resources.requests }}
             requests:
-              cpu: {{ .Values.resources.requests.cpu | default "" }}
-              memory: {{ .Values.resources.requests.memory | default "" }}
+              {{ if .Values.resources.requests.cpu
+              cpu: {{ .Values.resources.requests.cpu }}
+              {{ end }}
+              {{ if .Values.resources.requests.memory }}
+              memory: {{ .Values.resources.requests.memory }}
+              {{ end }}
             {{ end }}
             {{ if .Values.resources.limits }}
             limits:
-              cpu: {{ .Values.resources.limits.cpu | default "" }}
-              memory: {{ .Values.resources.limits.memory | default "" }}
+              {{ if .Values.resources.limits.cpu }}
+              cpu: {{ .Values.resources.limits.cpu }}
+              {{ end }}
+              {{ if .Values.resources.limits.memory }}
+              memory: {{ .Values.resources.limits.memory }}
+              {{ end }}
             {{ end }}
           env:
             - name: LOGLEVEL
