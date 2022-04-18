@@ -49,7 +49,7 @@ spec:
           resources:
             {{ if .Values.resources.requests }}
             requests:
-              {{ if .Values.resources.requests.cpu
+              {{ if .Values.resources.requests.cpu }}
               cpu: {{ .Values.resources.requests.cpu }}
               {{ end }}
               {{ if .Values.resources.requests.memory }}
